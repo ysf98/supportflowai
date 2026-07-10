@@ -1,0 +1,13 @@
+Django>=5.0,<5.1
+djangorestframework>=3.15,<3.16
+djangorestframework-simplejwt>=5.3,<5.4
+drf-spectacular>=0.27,<0.28
+django-filter>=24.2,<25.0
+django-cors-headers>=4.3,<4.4
+celery>=5.4,<5.5
+redis>=5.0,<5.1
+psycopg[binary]>=3.2,<3.3
+dj-database-url>=2.2,<2.3
+pgvector>=0.3,<0.4
+gunicorn>=22.0,<23.0
+openai>=1.40,<2.0

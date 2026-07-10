@@ -1,0 +1,228 @@
+{% load static %}
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{% block title %}SupportFlow AI{% endblock %}</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+    <style>
+      :root {
+        --sf-bg: #f4f7fb;
+        --sf-panel: #ffffff;
+        --sf-ink: #102033;
+        --sf-muted: #667085;
+        --sf-line: #dfe5ee;
+        --sf-primary: #2563eb;
+        --sf-primary-dark: #1d4ed8;
+        --sf-sidebar: #0b1220;
+        --sf-sidebar-soft: #172033;
+      }
+      body {
+        background:
+          radial-gradient(circle at top right, rgba(37, 99, 235, .12), transparent 32rem),
+          linear-gradient(180deg, #f8fbff 0%, var(--sf-bg) 42%, #eef3f9 100%);
+        color: var(--sf-ink);
+      }
+      a { text-decoration: none; }
+      .app-shell { min-height: 100vh; }
+      .sidebar {
+        background: linear-gradient(180deg, var(--sf-sidebar) 0%, #111827 100%);
+        border-right: 1px solid rgba(255, 255, 255, .08);
+      }
+      .brand-mark {
+        width: 2.4rem;
+        height: 2.4rem;
+        display: inline-grid;
+        place-items: center;
+        border-radius: .75rem;
+        color: #fff;
+        background: linear-gradient(135deg, #60a5fa, #2563eb);
+        box-shadow: 0 .75rem 1.5rem rgba(37, 99, 235, .35);
+      }
+      .sidebar .navbar-brand { color: #fff; }
+      .sidebar .nav-link {
+        color: #b9c3d5;
+        border-radius: .65rem;
+        padding: .65rem .8rem;
+        font-weight: 600;
+      }
+      .sidebar .nav-link:hover,
+      .sidebar .nav-link:focus,
+      .sidebar .nav-link.active {
+        color: #ffffff;
+        background: var(--sf-sidebar-soft);
+      }
+      .sidebar .nav-link i { width: 1.35rem; }
+      .main-panel { padding: 1.5rem; }
+      .topbar {
+        background: rgba(255, 255, 255, .78);
+        border: 1px solid rgba(223, 229, 238, .9);
+        border-radius: .9rem;
+        backdrop-filter: blur(12px);
+        box-shadow: 0 .5rem 1.4rem rgba(15, 23, 42, .05);
+      }
+      .page-title { font-weight: 750; letter-spacing: 0; }
+      .page-kicker {
+        color: var(--sf-primary);
+        font-weight: 700;
+        font-size: .78rem;
+        text-transform: uppercase;
+      }
+      .metric-card {
+        border: 1px solid rgba(223, 229, 238, .95);
+        border-radius: .9rem;
+        box-shadow: 0 .7rem 1.5rem rgba(15, 23, 42, .06);
+      }
+      .metric-card .metric-icon {
+        width: 2.2rem;
+        height: 2.2rem;
+        display: inline-grid;
+        place-items: center;
+        color: var(--sf-primary);
+        background: #eaf1ff;
+        border-radius: .65rem;
+      }
+      .metric-value { font-size: 2rem; font-weight: 750; line-height: 1; }
+      .content-card {
+        border: 1px solid var(--sf-line);
+        border-radius: .9rem;
+        box-shadow: 0 .7rem 1.6rem rgba(15, 23, 42, .055);
+      }
+      .content-card .card-header {
+        background: #fff;
+        border-bottom: 1px solid var(--sf-line);
+        border-radius: .9rem .9rem 0 0;
+      }
+      .table { margin-bottom: 0; }
+      .table thead th {
+        color: #667085;
+        font-size: .75rem;
+        text-transform: uppercase;
+        letter-spacing: .03em;
+        border-bottom-color: var(--sf-line);
+      }
+      .table tbody td { border-color: #edf1f6; padding: .9rem .75rem; }
+      .empty-state {
+        padding: 2rem;
+        border: 1px dashed #cfd8e6;
+        border-radius: .9rem;
+        background: #f8fafc;
+        color: var(--sf-muted);
+        text-align: center;
+      }
+      form p { margin-bottom: .75rem; }
+      form p label { display: block; font-weight: 600; margin-bottom: .25rem; }
+      form p input, form p select, form p textarea {
+        display: block;
+        width: 100%;
+        padding: .62rem .75rem;
+        border: 1px solid #cfd8e6;
+        border-radius: .55rem;
+        background: #fff;
+      }
+      form p input:focus, form p select:focus, form p textarea:focus {
+        border-color: var(--sf-primary);
+        box-shadow: 0 0 0 .2rem rgba(37, 99, 235, .12);
+        outline: none;
+      }
+      .btn { border-radius: .6rem; font-weight: 650; }
+      .btn-primary { background: var(--sf-primary); border-color: var(--sf-primary); }
+      .btn-primary:hover { background: var(--sf-primary-dark); border-color: var(--sf-primary-dark); }
+      .badge { border-radius: 999px; padding: .45em .7em; font-weight: 650; }
+      .status-pill {
+        display: inline-flex;
+        gap: .35rem;
+        align-items: center;
+        border-radius: 999px;
+        padding: .35rem .65rem;
+        background: #f1f5f9;
+        color: #475569;
+        font-weight: 700;
+        font-size: .78rem;
+      }
+      .message-user {
+        background: linear-gradient(135deg, #e7f1ff, #f6faff);
+        border-color: #bfdbfe;
+      }
+      .message-assistant { background: #ffffff; }
+      .source-chip {
+        display: inline-flex;
+        align-items: center;
+        gap: .35rem;
+        border: 1px solid #dbeafe;
+        background: #eff6ff;
+        color: #1d4ed8;
+        border-radius: 999px;
+        padding: .25rem .55rem;
+        margin: .2rem .2rem 0 0;
+        font-size: .82rem;
+        font-weight: 650;
+      }
+      .auth-wrap {
+        min-height: calc(100vh - 3rem);
+        display: grid;
+        place-items: center;
+      }
+      .auth-card {
+        max-width: 28rem;
+        width: 100%;
+        border: 1px solid var(--sf-line);
+        border-radius: 1rem;
+        box-shadow: 0 1.5rem 3rem rgba(15, 23, 42, .12);
+      }
+      @media (min-width: 992px) {
+        .sidebar { position: sticky; top: 0; height: 100vh; }
+        .main-panel { padding: 1.75rem 2rem; }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container-fluid app-shell">
+      <div class="row min-vh-100">
+        {% if request.user.is_authenticated %}
+          <aside class="col-12 col-lg-2 sidebar p-3">
+            <a class="navbar-brand fw-semibold d-flex align-items-center gap-2 mb-4" href="{% url 'web-dashboard' %}">
+              <span class="brand-mark"><i class="bi bi-life-preserver"></i></span>
+              <span>SupportFlow AI</span>
+            </a>
+            <nav class="nav nav-pills flex-column gap-1">
+              <a class="nav-link" href="{% url 'web-dashboard' %}"><i class="bi bi-speedometer2"></i>Dashboard</a>
+              <a class="nav-link" href="{% url 'web-organizations' %}"><i class="bi bi-building"></i>Organizations</a>
+              <a class="nav-link" href="{% url 'web-documents' %}"><i class="bi bi-file-earmark-text"></i>Documents</a>
+              <a class="nav-link" href="{% url 'web-conversations' %}"><i class="bi bi-chat-dots"></i>Chat RAG</a>
+              <a class="nav-link" href="{% url 'web-tickets' %}"><i class="bi bi-ticket-detailed"></i>Tickets</a>
+              <a class="nav-link" href="{% url 'web-evaluations' %}"><i class="bi bi-clipboard2-check"></i>Evaluations</a>
+              <a class="nav-link" href="{% url 'web-profile' %}"><i class="bi bi-person-circle"></i>Profile</a>
+              <a class="nav-link" href="{% url 'swagger-ui' %}"><i class="bi bi-braces"></i>API Docs</a>
+            </nav>
+            <form method="post" action="{% url 'web-logout' %}" class="mt-4">
+              {% csrf_token %}
+              <button class="btn btn-outline-light btn-sm w-100" type="submit">Sign out</button>
+            </form>
+          </aside>
+          <main class="col-12 col-lg-10 main-panel">
+            <div class="topbar d-flex justify-content-between align-items-center px-3 py-2 mb-4">
+              <div class="small text-muted">Workspace support platform</div>
+              <div class="d-flex align-items-center gap-2">
+                <span class="status-pill"><i class="bi bi-check-circle-fill text-success"></i> Local</span>
+                <span class="small fw-semibold">{{ request.user.email }}</span>
+              </div>
+            </div>
+        {% else %}
+          <main class="col-12 p-4">
+        {% endif %}
+          {% if messages %}
+            <div class="mb-3">
+              {% for message in messages %}
+                <div class="alert alert-{{ message.tags|default:'info' }} mb-2">{{ message }}</div>
+              {% endfor %}
+            </div>
+          {% endif %}
+          {% block content %}{% endblock %}
+        </main>
+      </div>
+    </div>
+  </body>
+</html>

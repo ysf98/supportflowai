@@ -1,0 +1,46 @@
+{% extends "web/base.html" %}
+{% block title %}{{ ticket.title }} - Tickets{% endblock %}
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+  <div>
+    <div class="page-kicker mb-1">Ticket</div>
+    <h1 class="h2 page-title mb-1">{{ ticket.title }}</h1>
+    <p class="text-muted mb-0">{{ ticket.organization.name }}</p>
+  </div>
+  <a class="btn btn-outline-secondary" href="{% url 'web-tickets' %}">Back</a>
+</div>
+<div class="row g-4">
+  <div class="col-lg-8">
+    <div class="card content-card mb-4"><div class="card-header"><h2 class="h5 mb-0">Issue details</h2></div><div class="card-body">
+      <div class="d-flex gap-2 mb-3">
+        <span class="badge text-bg-secondary">{{ ticket.status }}</span>
+        <span class="badge text-bg-warning">{{ ticket.priority }}</span>
+        <span class="badge text-bg-info">{{ ticket.category }}</span>
+      </div>
+      <p>{{ ticket.description }}</p>
+      {% if ticket.ai_summary %}<div class="alert alert-info"><strong>AI summary:</strong> {{ ticket.ai_summary }}</div>{% endif %}
+      {% if ticket.ai_suggested_reply %}<div class="alert alert-success"><strong>Suggested reply:</strong><br>{{ ticket.ai_suggested_reply }}</div>{% endif %}
+    </div></div>
+    <div class="card content-card"><div class="card-header"><h2 class="h5 mb-0">Comments</h2></div><div class="card-body">
+      {% for comment in ticket.comments.all %}
+        <div class="border rounded p-3 mb-2"><div class="small text-muted">{{ comment.author.email }} - {% if comment.is_internal %}internal{% else %}public{% endif %}</div>{{ comment.content }}</div>
+      {% empty %}<div class="empty-state">No comments yet.</div>{% endfor %}
+    </div></div>
+  </div>
+  <div class="col-lg-4">
+    <div class="card content-card mb-3"><div class="card-header"><h2 class="h5 mb-0">AI actions</h2></div><div class="card-body">
+      <p class="text-muted small">Classify and generate a reply in background through Celery.</p>
+      <form method="post" class="d-grid gap-2">{% csrf_token %}
+        <button class="btn btn-outline-primary" name="action" value="classify">Queue classification</button>
+        <button class="btn btn-outline-primary" name="action" value="suggest">Queue suggested reply</button>
+      </form>
+    </div></div>
+    <div class="card content-card mb-3"><div class="card-header"><h2 class="h5 mb-0">Add comment</h2></div><div class="card-body">
+      <form method="post">{% csrf_token %}<input type="hidden" name="action" value="comment">{{ comment_form.as_p }}<button class="btn btn-primary w-100">Add comment</button></form>
+    </div></div>
+    <div class="card content-card"><div class="card-header"><h2 class="h5 mb-0">Resolve</h2></div><div class="card-body">
+      <form method="post">{% csrf_token %}<input type="hidden" name="action" value="resolve"><p><label>Resolution comment</label><textarea name="comment" rows="3"></textarea></p><button class="btn btn-success w-100">Resolve ticket</button></form>
+    </div></div>
+  </div>
+</div>
+{% endblock %}

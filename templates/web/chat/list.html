@@ -1,0 +1,23 @@
+{% extends "web/base.html" %}
+{% block title %}Chat RAG - SupportFlow AI{% endblock %}
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+  <div>
+    <div class="page-kicker mb-1">Retrieval augmented generation</div>
+    <h1 class="h2 page-title mb-1">Chat RAG</h1>
+    <p class="text-muted mb-0">Ask questions grounded in organization documents and inspect cited sources.</p>
+  </div>
+</div>
+<div class="row g-4">
+  <div class="col-xl-8"><div class="card content-card"><div class="card-header"><h2 class="h5 mb-0">Conversations</h2></div><div class="card-body">
+    <table class="table align-middle">
+      <thead><tr><th>Title</th><th>Organization</th><th>Messages</th><th></th></tr></thead>
+      <tbody>{% for conversation in conversations %}<tr><td><div class="fw-semibold">{{ conversation.title }}</div><div class="small text-muted">Updated {{ conversation.updated_at|date:"M d, Y H:i" }}</div></td><td>{{ conversation.organization.name }}</td><td><span class="status-pill"><i class="bi bi-chat-text"></i>{{ conversation.message_count }}</span></td><td class="text-end"><a class="btn btn-sm btn-outline-primary" href="{% url 'web-conversation-detail' conversation.pk %}">Open</a></td></tr>{% empty %}<tr><td colspan="4"><div class="empty-state">No conversations yet. Create one and ask your first RAG question.</div></td></tr>{% endfor %}</tbody>
+    </table>
+  </div></div></div>
+  <div class="col-xl-4"><div class="card content-card"><div class="card-header"><h2 class="h5 mb-0">New conversation</h2></div><div class="card-body">
+    <p class="text-muted small">Choose a workspace. Answers will only use sources from that organization.</p>
+    <form method="post">{% csrf_token %}{{ form.as_p }}<button class="btn btn-primary w-100">Create</button></form>
+  </div></div></div>
+</div>
+{% endblock %}

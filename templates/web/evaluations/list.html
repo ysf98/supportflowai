@@ -1,0 +1,31 @@
+{% extends "web/base.html" %}
+{% block title %}Evaluations - SupportFlow AI{% endblock %}
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+  <div>
+    <div class="page-kicker mb-1">Quality checks</div>
+    <h1 class="h2 page-title mb-1">Evaluations</h1>
+    <p class="text-muted mb-0">Measure RAG answer quality, source retrieval, and pass/fail outcomes.</p>
+  </div>
+</div>
+<div class="row g-4">
+  <div class="col-xl-8">
+    <div class="card content-card mb-4"><div class="card-header"><h2 class="h5 mb-0">Evaluation cases</h2></div><div class="card-body">
+      <table class="table align-middle">
+        <thead><tr><th>Question</th><th>Expected document</th><th></th></tr></thead>
+        <tbody>{% for case in cases %}<tr><td><div class="fw-semibold">{{ case.question|truncatechars:80 }}</div><div class="small text-muted">{{ case.organization.name }}</div></td><td>{{ case.expected_document.title|default:"-" }}</td><td class="text-end"><a class="btn btn-sm btn-outline-primary" href="{% url 'web-evaluation-detail' case.pk %}">Open</a></td></tr>{% empty %}<tr><td colspan="3"><div class="empty-state">No evaluation cases yet. Create one to test the RAG pipeline.</div></td></tr>{% endfor %}</tbody>
+      </table>
+    </div></div>
+    <div class="card content-card"><div class="card-header"><h2 class="h5 mb-0">Recent runs</h2></div><div class="card-body">
+      <table class="table align-middle">
+        <thead><tr><th>Case</th><th>Score</th><th>Passed</th></tr></thead>
+        <tbody>{% for run in runs %}<tr><td>{{ run.case.question|truncatechars:60 }}</td><td><span class="status-pill">{{ run.score }}</span></td><td>{% if run.passed %}<span class="badge text-bg-success">passed</span>{% else %}<span class="badge text-bg-secondary">not passed</span>{% endif %}</td></tr>{% empty %}<tr><td colspan="3"><div class="empty-state">No runs yet.</div></td></tr>{% endfor %}</tbody>
+      </table>
+    </div></div>
+  </div>
+  <div class="col-xl-4"><div class="card content-card"><div class="card-header"><h2 class="h5 mb-0">Create case</h2></div><div class="card-body">
+    <p class="text-muted small">Use expected answers and documents to validate whether retrieval and generation behave correctly.</p>
+    <form method="post">{% csrf_token %}{{ form.as_p }}<button class="btn btn-primary w-100">Create</button></form>
+  </div></div></div>
+</div>
+{% endblock %}

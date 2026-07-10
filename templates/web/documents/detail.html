@@ -1,0 +1,43 @@
+{% extends "web/base.html" %}
+{% block title %}{{ document.title }} - Documents{% endblock %}
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+  <div>
+    <div class="page-kicker mb-1">Document</div>
+    <h1 class="h2 page-title mb-1">{{ document.title }}</h1>
+    <p class="text-muted mb-0">{{ document.organization.name }} - {{ document.original_filename }}</p>
+  </div>
+  <a class="btn btn-outline-secondary" href="{% url 'web-documents' %}">Back</a>
+</div>
+<div class="row g-4">
+  <div class="col-lg-4">
+    <div class="card content-card"><div class="card-header"><h2 class="h5 mb-0">Processing</h2></div><div class="card-body">
+      <p><span class="badge text-bg-secondary">{{ document.status }}</span></p>
+      <div class="row g-2 mb-3">
+        <div class="col-6"><div class="border rounded p-2"><div class="small text-muted">Chunks</div><strong>{{ document.chunk_count }}</strong></div></div>
+        <div class="col-6"><div class="border rounded p-2"><div class="small text-muted">Size</div><strong>{{ document.size }}</strong></div></div>
+      </div>
+      {% if document.error_message %}<div class="alert alert-danger">{{ document.error_message }}</div>{% endif %}
+      <form method="post" class="d-grid gap-2">
+        {% csrf_token %}
+        <button class="btn btn-primary" name="action" value="process">Queue processing</button>
+        <button class="btn btn-outline-primary" name="action" value="embed">Queue embeddings</button>
+      </form>
+      <p class="small text-muted mt-3 mb-0">Queued jobs are handled by Celery. Refresh this page after completion.</p>
+    </div></div>
+  </div>
+  <div class="col-lg-8">
+    <div class="card content-card mb-4"><div class="card-header"><h2 class="h5 mb-0">Extracted text</h2></div><div class="card-body">
+      <pre class="bg-light p-3 rounded small">{{ document.extracted_text|default:"No extracted text yet." }}</pre>
+    </div></div>
+    <div class="card content-card"><div class="card-header"><h2 class="h5 mb-0">Chunks</h2></div><div class="card-body">
+      {% for chunk in document.chunks.all %}
+        <div class="border rounded p-3 mb-2">
+          <div class="d-flex justify-content-between"><strong>Chunk {{ chunk.index }}</strong><span class="badge text-bg-info">{{ chunk.embedding_status }}</span></div>
+          <p class="mb-0 small">{{ chunk.content }}</p>
+        </div>
+      {% empty %}<div class="empty-state">No chunks yet. Queue document processing first.</div>{% endfor %}
+    </div></div>
+  </div>
+</div>
+{% endblock %}

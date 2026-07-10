@@ -1,0 +1,27 @@
+{% extends "web/base.html" %}
+{% block title %}Organizations - SupportFlow AI{% endblock %}
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+  <div>
+    <div class="page-kicker mb-1">Multi-tenant access</div>
+    <h1 class="h2 page-title mb-1">Organizations</h1>
+    <p class="text-muted mb-0">Workspaces and memberships available to you.</p>
+  </div>
+</div>
+<div class="row g-4">
+  <div class="col-lg-8">
+    <div class="card content-card"><div class="card-header"><h2 class="h5 mb-0">Accessible workspaces</h2></div><div class="card-body">
+      <table class="table align-middle">
+        <thead><tr><th>Name</th><th>Slug</th><th>Members</th></tr></thead>
+        <tbody>{% for organization in organizations %}<tr><td><div class="fw-semibold">{{ organization.name }}</div></td><td><code>{{ organization.slug }}</code></td><td><span class="status-pill"><i class="bi bi-people"></i>{{ organization.memberships.count }}</span></td></tr>{% empty %}<tr><td colspan="3"><div class="empty-state">No organizations.</div></td></tr>{% endfor %}</tbody>
+      </table>
+    </div></div>
+  </div>
+  <div class="col-lg-4">
+    <div class="card content-card"><div class="card-header"><h2 class="h5 mb-0">Create workspace</h2></div><div class="card-body">
+      <p class="text-muted small">New workspaces are isolated by organization-scoped permissions.</p>
+      <form method="post">{% csrf_token %}{{ form.as_p }}<button class="btn btn-primary w-100">Create</button></form>
+    </div></div>
+  </div>
+</div>
+{% endblock %}

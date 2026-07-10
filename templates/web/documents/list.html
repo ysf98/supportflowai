@@ -1,0 +1,42 @@
+{% extends "web/base.html" %}
+{% block title %}Documents - SupportFlow AI{% endblock %}
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+  <div>
+    <div class="page-kicker mb-1">Knowledge base</div>
+    <h1 class="h2 page-title mb-1">Documents</h1>
+    <p class="text-muted mb-0">Upload, process, chunk, and embed internal documentation.</p>
+  </div>
+</div>
+<div class="row g-4">
+  <div class="col-xl-8">
+    <div class="card content-card">
+      <div class="card-header d-flex justify-content-between align-items-center">
+        <h2 class="h5 mb-0">Document library</h2>
+        <span class="status-pill"><i class="bi bi-database"></i>{{ documents|length }} items</span>
+      </div>
+      <div class="card-body">
+      <table class="table align-middle">
+        <thead><tr><th>Title</th><th>Organization</th><th>Status</th><th>Chunks</th><th></th></tr></thead>
+        <tbody>
+          {% for document in documents %}
+          <tr>
+            <td><div class="fw-semibold">{{ document.title }}</div><div class="small text-muted">{{ document.original_filename }}</div></td>
+            <td>{{ document.organization.name }}</td>
+            <td><span class="badge text-bg-secondary">{{ document.status }}</span></td>
+            <td>{{ document.chunk_count }}</td>
+            <td class="text-end"><a class="btn btn-sm btn-outline-primary" href="{% url 'web-document-detail' document.pk %}">Open</a></td>
+          </tr>
+          {% empty %}<tr><td colspan="5"><div class="empty-state">No documents yet. Upload a text or markdown file to begin.</div></td></tr>{% endfor %}
+        </tbody>
+      </table>
+    </div></div>
+  </div>
+  <div class="col-xl-4">
+    <div class="card content-card"><div class="card-header"><h2 class="h5 mb-0">Upload document</h2></div><div class="card-body">
+      <p class="text-muted small">Supported formats: .txt and .md. Processing and embeddings can be queued from the detail page.</p>
+      <form method="post" enctype="multipart/form-data">{% csrf_token %}{{ form.as_p }}<button class="btn btn-primary w-100">Upload</button></form>
+    </div></div>
+  </div>
+</div>
+{% endblock %}

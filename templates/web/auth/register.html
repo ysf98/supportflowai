@@ -1,0 +1,24 @@
+{% extends "web/base.html" %}
+{% block title %}Register - SupportFlow AI{% endblock %}
+{% block content %}
+<div class="auth-wrap">
+  <div class="auth-card card">
+    <div class="card-body p-4 p-md-5">
+        <div class="d-flex align-items-center gap-2 mb-4">
+          <span class="brand-mark"><i class="bi bi-life-preserver"></i></span>
+          <div>
+            <h1 class="h4 mb-0">Create your workspace</h1>
+            <div class="small text-muted">A demo-ready support platform</div>
+          </div>
+        </div>
+        <p class="text-muted mb-4">Register a user and automatically create the first organization with owner permissions.</p>
+        <form method="post">
+          {% csrf_token %}
+          {{ form.as_p }}
+          <button class="btn btn-primary w-100" type="submit">Create account</button>
+        </form>
+        <p class="mt-3 mb-0 text-center">Already registered? <a href="{% url 'web-login' %}">Sign in</a></p>
+    </div>
+  </div>
+</div>
+{% endblock %}

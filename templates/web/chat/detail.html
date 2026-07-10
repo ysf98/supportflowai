@@ -1,0 +1,32 @@
+{% extends "web/base.html" %}
+{% block title %}{{ conversation.title }} - Chat{% endblock %}
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+  <div>
+    <div class="page-kicker mb-1">Conversation</div>
+    <h1 class="h2 page-title mb-1">{{ conversation.title }}</h1>
+    <p class="text-muted mb-0">{{ conversation.organization.name }}</p>
+  </div>
+  <a class="btn btn-outline-secondary" href="{% url 'web-conversations' %}">Back</a>
+</div>
+<div class="row g-4">
+  <div class="col-lg-8">
+    {% for message in messages %}
+      <div class="card content-card mb-3 {% if message.role == 'user' %}message-user{% else %}message-assistant{% endif %}">
+        <div class="card-body">
+          <div class="d-flex justify-content-between mb-2"><strong>{% if message.role == 'assistant' %}<i class="bi bi-stars me-1"></i>{% else %}<i class="bi bi-person me-1"></i>{% endif %}{{ message.role|title }}</strong><span class="text-muted small">{{ message.created_at|date:"M d, Y H:i" }}</span></div>
+          <p class="mb-2">{{ message.content }}</p>
+          {% if message.sources.all %}
+            <div class="small text-muted fw-semibold">Sources</div>
+            <div>{% for source in message.sources.all %}<span class="source-chip"><i class="bi bi-link-45deg"></i>{{ source.document.title }} - score {{ source.score|floatformat:2 }}</span>{% endfor %}</div>
+          {% endif %}
+        </div>
+      </div>
+    {% empty %}<div class="empty-state">Ask the first question. The answer will cite retrieved document chunks when context exists.</div>{% endfor %}
+  </div>
+  <div class="col-lg-4"><div class="card content-card"><div class="card-header"><h2 class="h5 mb-0">Ask a question</h2></div><div class="card-body">
+    <p class="text-muted small">The assistant only uses chunks from this conversation's organization.</p>
+    <form method="post">{% csrf_token %}{{ form.as_p }}<button class="btn btn-primary w-100">Ask</button></form>
+  </div></div></div>
+</div>
+{% endblock %}

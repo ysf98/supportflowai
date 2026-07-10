@@ -1,0 +1,50 @@
+{% extends "web/base.html" %}
+{% block title %}Dashboard - SupportFlow AI{% endblock %}
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+  <div>
+    <div class="page-kicker mb-1">Operations</div>
+    <h1 class="h2 page-title mb-1">Dashboard</h1>
+    <p class="text-muted mb-0">Operational overview across your accessible workspaces.</p>
+  </div>
+  <a class="btn btn-primary" href="{% url 'web-documents' %}"><i class="bi bi-cloud-arrow-up me-1"></i>Upload document</a>
+</div>
+
+<div class="row g-3 mb-4">
+  <div class="col-md-3"><div class="card metric-card"><div class="card-body"><div class="d-flex justify-content-between align-items-start"><div><div class="text-muted small fw-semibold">Documents</div><div class="metric-value">{{ summary.documents_total }}</div></div><span class="metric-icon"><i class="bi bi-files"></i></span></div></div></div></div>
+  <div class="col-md-3"><div class="card metric-card"><div class="card-body"><div class="d-flex justify-content-between align-items-start"><div><div class="text-muted small fw-semibold">Processed</div><div class="metric-value">{{ summary.documents_processed }}</div></div><span class="metric-icon"><i class="bi bi-check2-circle"></i></span></div></div></div></div>
+  <div class="col-md-3"><div class="card metric-card"><div class="card-body"><div class="d-flex justify-content-between align-items-start"><div><div class="text-muted small fw-semibold">Open tickets</div><div class="metric-value">{{ summary.tickets_open }}</div></div><span class="metric-icon"><i class="bi bi-ticket-detailed"></i></span></div></div></div></div>
+  <div class="col-md-3"><div class="card metric-card"><div class="card-body"><div class="d-flex justify-content-between align-items-start"><div><div class="text-muted small fw-semibold">Eval pass rate</div><div class="metric-value">{{ summary.evaluation_pass_rate }}</div></div><span class="metric-icon"><i class="bi bi-graph-up-arrow"></i></span></div></div></div></div>
+</div>
+
+<div class="row g-3 mb-4">
+  <div class="col-md-3"><div class="card content-card"><div class="card-body"><div class="text-muted small">Chunks</div><strong>{{ summary.chunks_total }}</strong></div></div></div>
+  <div class="col-md-3"><div class="card content-card"><div class="card-body"><div class="text-muted small">Embeddings</div><strong>{{ summary.chunks_with_embeddings }}</strong></div></div></div>
+  <div class="col-md-3"><div class="card content-card"><div class="card-body"><div class="text-muted small">Questions</div><strong>{{ summary.questions_total }}</strong></div></div></div>
+  <div class="col-md-3"><div class="card content-card"><div class="card-body"><div class="text-muted small">AI ops estimated</div><strong>{{ summary.ai_operations_estimated }}</strong></div></div></div>
+</div>
+
+<div class="row g-3">
+  <div class="col-lg-4">
+    <div class="card content-card"><div class="card-header"><h2 class="h5 mb-0">Recent documents</h2></div><div class="card-body">
+      <ul class="list-group list-group-flush">
+        {% for document in recent_documents %}<li class="list-group-item px-0"><a href="{% url 'web-document-detail' document.pk %}">{{ document.title }}</a><span class="badge text-bg-secondary float-end">{{ document.status }}</span></li>{% empty %}<li class="list-group-item px-0 text-muted">No documents yet.</li>{% endfor %}
+      </ul>
+    </div></div>
+  </div>
+  <div class="col-lg-4">
+    <div class="card content-card"><div class="card-header"><h2 class="h5 mb-0">Recent tickets</h2></div><div class="card-body">
+      <ul class="list-group list-group-flush">
+        {% for ticket in recent_tickets %}<li class="list-group-item px-0"><a href="{% url 'web-ticket-detail' ticket.pk %}">{{ ticket.title }}</a><span class="badge text-bg-warning float-end">{{ ticket.priority }}</span></li>{% empty %}<li class="list-group-item px-0 text-muted">No tickets yet.</li>{% endfor %}
+      </ul>
+    </div></div>
+  </div>
+  <div class="col-lg-4">
+    <div class="card content-card"><div class="card-header"><h2 class="h5 mb-0">Recent conversations</h2></div><div class="card-body">
+      <ul class="list-group list-group-flush">
+        {% for conversation in recent_conversations %}<li class="list-group-item px-0"><a href="{% url 'web-conversation-detail' conversation.pk %}">{{ conversation.title }}</a></li>{% empty %}<li class="list-group-item px-0 text-muted">No conversations yet.</li>{% endfor %}
+      </ul>
+    </div></div>
+  </div>
+</div>
+{% endblock %}

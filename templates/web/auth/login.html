@@ -1,0 +1,25 @@
+{% extends "web/base.html" %}
+{% block title %}Sign in - SupportFlow AI{% endblock %}
+{% block content %}
+<div class="auth-wrap">
+  <div class="auth-card card">
+    <div class="card-body p-4 p-md-5">
+        <div class="d-flex align-items-center gap-2 mb-4">
+          <span class="brand-mark"><i class="bi bi-life-preserver"></i></span>
+          <div>
+            <h1 class="h4 mb-0">SupportFlow AI</h1>
+            <div class="small text-muted">Internal support intelligence</div>
+          </div>
+        </div>
+        <h2 class="h5 mb-2">Welcome back</h2>
+        <p class="text-muted mb-4">Sign in to manage documents, tickets, RAG conversations, and evaluation runs.</p>
+        <form method="post">
+          {% csrf_token %}
+          {{ form.as_p }}
+          <button class="btn btn-primary w-100" type="submit">Sign in</button>
+        </form>
+        <p class="mt-3 mb-0 text-center">No account? <a href="{% url 'web-register' %}">Create one</a></p>
+    </div>
+  </div>
+</div>
+{% endblock %}

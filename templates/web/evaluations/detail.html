@@ -1,0 +1,36 @@
+{% extends "web/base.html" %}
+{% block title %}Evaluation - SupportFlow AI{% endblock %}
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+  <div>
+    <div class="page-kicker mb-1">Evaluation</div>
+    <h1 class="h2 page-title mb-1">Evaluation case</h1>
+    <p class="text-muted mb-0">{{ case.organization.name }}</p>
+  </div>
+  <a class="btn btn-outline-secondary" href="{% url 'web-evaluations' %}">Back</a>
+</div>
+<div class="row g-4">
+  <div class="col-lg-8">
+    <div class="card content-card mb-4"><div class="card-header"><h2 class="h5 mb-0">Expected behavior</h2></div><div class="card-body">
+      <h2 class="h5">Question</h2>
+      <p>{{ case.question }}</p>
+      <h2 class="h6">Expected answer</h2>
+      <p class="text-muted">{{ case.expected_answer|default:"No expected answer configured." }}</p>
+    </div></div>
+    <div class="card content-card"><div class="card-header"><h2 class="h5 mb-0">Runs</h2></div><div class="card-body">
+      {% for run in runs %}
+        <div class="border rounded p-3 mb-2">
+          <div><strong>Score:</strong> {{ run.score }} - <strong>Passed:</strong> {{ run.passed }}</div>
+          <p class="mb-1">{{ run.generated_answer }}</p>
+          <div class="small text-muted">{{ run.notes }}</div>
+        </div>
+      {% empty %}<div class="empty-state">No runs yet. Queue the first run from the panel.</div>{% endfor %}
+    </div></div>
+  </div>
+  <div class="col-lg-4"><div class="card content-card"><div class="card-body">
+    <h2 class="h5">Run evaluation</h2>
+    <p class="text-muted small">Runs are queued through Celery and saved for later inspection.</p>
+    <form method="post">{% csrf_token %}{{ form.as_p }}<button class="btn btn-primary w-100">Queue run</button></form>
+  </div></div></div>
+</div>
+{% endblock %}
