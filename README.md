@@ -50,6 +50,7 @@ The project currently includes:
 - Server-rendered web UI for demos without Postman.
 - Security hardening baseline.
 - Professional pytest suite with 100+ tests.
+- GitHub Actions CI for checks, tests, migrations, OpenAPI, and deploy checks.
 
 ## Feature Overview
 
@@ -136,6 +137,26 @@ docker compose run --rm web python manage.py makemigrations --check --dry-run
 docker compose run --rm web pytest
 docker compose run --rm web python manage.py spectacular --file /tmp/supportflow-schema.yml --validate
 docker compose exec worker celery -A config inspect ping
+```
+
+## Continuous Integration
+
+GitHub Actions runs on pushes and pull requests to `main`.
+
+The workflow validates:
+
+- Docker Compose configuration,
+- Docker image build,
+- Django checks,
+- pending migrations,
+- full pytest suite,
+- OpenAPI schema,
+- production-style deploy checks.
+
+Workflow file:
+
+```txt
+.github/workflows/ci.yml
 ```
 
 ## API Docs

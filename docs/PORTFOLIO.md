@@ -58,6 +58,7 @@ The project focuses on backend architecture, multi-tenant permissions, AI abstra
 - Environment-based settings.
 - Security hardening baseline.
 - Automated tests with pytest.
+- GitHub Actions CI.
 - OpenAPI documentation.
 - Professional docs in `docs/`.
 - Server-rendered UI for demo without Postman.

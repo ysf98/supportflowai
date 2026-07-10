@@ -182,6 +182,26 @@ Validate OpenAPI:
 docker compose run --rm web python manage.py spectacular --file /tmp/supportflow-schema.yml --validate
 ```
 
+## Continuous Integration
+
+GitHub Actions runs the same core checks on pushes and pull requests to `main`.
+
+Workflow:
+
+```txt
+.github/workflows/ci.yml
+```
+
+CI validates:
+
+- Docker Compose configuration,
+- image build,
+- Django system checks,
+- missing migrations,
+- full pytest suite,
+- OpenAPI schema,
+- production-style deploy checks.
+
 Production-style security check:
 
 ```bash
