@@ -285,14 +285,22 @@ docker compose run --rm web python manage.py spectacular --file /tmp/supportflow
 
 Use these screenshots for GitHub, LinkedIn, or a portfolio page:
 
-1. Dashboard with seeded metrics.
-2. Document detail showing processed text and chunks.
-3. Document chunks with ready embedding status.
-4. RAG conversation showing answer and source chips.
-5. Ticket detail showing status, priority, AI summary, and suggested reply.
-6. Evaluation detail showing a run score and notes.
-7. Swagger UI with the grouped API endpoints.
-8. Test run terminal showing `pytest` passing.
+1. `docs/screenshots/dashboard.png` - Dashboard with seeded metrics.
+2. `docs/screenshots/documents.png` - Document list and processing actions.
+3. `docs/screenshots/document-detail.png` - Processed document detail and chunks.
+4. `docs/screenshots/chat.png` - RAG conversation with answer sources.
+5. `docs/screenshots/ticket.png` - Ticket detail with status, priority, AI summary, and suggested reply.
+6. `docs/screenshots/evaluation.png` - Evaluation detail with run score and notes.
+7. `docs/screenshots/api-docs.png` - Swagger UI with grouped API endpoints.
+8. A terminal screenshot showing `pytest` and GitHub Actions passing.
+
+Regenerate browser screenshots locally with:
+
+```bash
+node scripts/capture_screenshots.mjs
+```
+
+The command expects the Docker stack to be running and demo data to exist.
 
 ## Demo Script
 

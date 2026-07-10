@@ -1,99 +1,112 @@
 # SupportFlow AI
 
-SupportFlow AI is a professional fullstack internal SaaS platform for enterprise support teams. It is designed to demonstrate a production-minded Django backend with multi-tenant organizations, REST APIs, AI-assisted support workflows, RAG over internal documentation, async processing, testing, Docker, and clear documentation.
+[![CI](https://github.com/ysf98/supportflowai/actions/workflows/ci.yml/badge.svg)](https://github.com/ysf98/supportflowai/actions/workflows/ci.yml)
+![Python](https://img.shields.io/badge/Python-3.12-3776AB?logo=python&logoColor=white)
+![Django](https://img.shields.io/badge/Django-5.x-092E20?logo=django&logoColor=white)
+![DRF](https://img.shields.io/badge/DRF-REST%20API-red)
+![PostgreSQL](https://img.shields.io/badge/PostgreSQL%20%2B%20pgvector-4169E1?logo=postgresql&logoColor=white)
+![Redis](https://img.shields.io/badge/Redis-Celery-DC382D?logo=redis&logoColor=white)
+![Docker](https://img.shields.io/badge/Docker-ready-2496ED?logo=docker&logoColor=white)
+![Tests](https://img.shields.io/badge/tests-114%20passing-brightgreen)
 
-## Status
+**SupportFlow AI** is a professional fullstack internal SaaS platform for enterprise support teams.
 
-Phase 16 completed: portfolio preparation.
+It combines document ingestion, semantic search, RAG answers with cited sources, AI-assisted ticket workflows, evaluation runs, dashboard metrics, Celery background jobs, organization-based permissions, OpenAPI documentation, Docker, and a server-rendered web UI.
 
-The project currently includes:
+This project is built as a portfolio-grade Django application: realistic architecture, clean domain boundaries, tests, security notes, documentation, and demo data.
 
-- Django project structure
-- Modular domain apps
-- Environment-based settings
-- Django REST Framework
-- SimpleJWT
-- drf-spectacular
-- django-filter
-- Celery worker configuration
-- Redis broker/result backend configuration
-- PostgreSQL with pgvector through Docker Compose
-- pytest and pytest-django setup
-- users, organizations, documents, embeddings, semantic search, and chat RAG
-- tickets, evaluations, dashboard summary, Django Templates web UI, and async background jobs
-- security-oriented settings, upload validation, and hardening documentation
-- expanded professional test suite for permissions, serializers, OpenAPI, async tasks, web, and multi-tenant regressions
-- idempotent demo data command for local portfolio walkthroughs
-- portfolio-ready documentation, demo script, and screenshot checklist
+---
 
-## Stack
+## 📸 Screenshots
 
-- Python
-- Django
-- Django REST Framework
-- PostgreSQL + pgvector
-- Redis
-- Celery
-- SimpleJWT
-- drf-spectacular
-- pytest + pytest-django
-- pgvector-backed semantic search
-- Docker and Docker Compose
+| Dashboard | RAG Chat |
+| --- | --- |
+| ![SupportFlow AI dashboard](docs/screenshots/dashboard.png) | ![SupportFlow AI RAG chat](docs/screenshots/chat.png) |
 
-## What This Project Demonstrates
+| Documents | Ticket Detail |
+| --- | --- |
+| ![SupportFlow AI documents](docs/screenshots/documents.png) | ![SupportFlow AI ticket detail](docs/screenshots/ticket.png) |
 
-- Multi-tenant SaaS-style backend with organizations and roles.
-- Professional REST API design with DRF and OpenAPI.
-- RAG over internal documentation with pgvector semantic search.
-- AI provider abstraction with deterministic fake provider for tests.
-- Celery/Redis background workflows.
-- Server-rendered web UI for demos without Postman.
-- Security hardening baseline.
-- Professional pytest suite with 100+ tests.
-- GitHub Actions CI for checks, tests, migrations, OpenAPI, and deploy checks.
+| Evaluation Detail | OpenAPI / Swagger |
+| --- | --- |
+| ![SupportFlow AI evaluation detail](docs/screenshots/evaluation.png) | ![SupportFlow AI OpenAPI docs](docs/screenshots/api-docs.png) |
 
-## Feature Overview
+---
 
-- Email-based user registration and JWT login.
-- Automatic initial organization on registration.
-- Organization memberships with owner/admin/agent/viewer roles.
-- Document upload for `.txt` and `.md`.
-- Text extraction and deterministic chunking.
-- Chunk embeddings stored in PostgreSQL with pgvector.
-- Semantic search filtered by organization.
-- RAG chat with stored answer sources.
-- Support tickets with comments, status, priority, and category.
-- AI ticket classification and suggested replies.
-- Evaluation cases and RAG evaluation runs.
-- Dashboard metrics.
-- Celery-backed async endpoints.
-- Professional Django Templates + Bootstrap web interface.
+## ✨ What It Does
 
-## Project Structure
+- Upload internal `.txt` and `.md` documentation.
+- Extract text and split documents into deterministic chunks.
+- Generate embeddings and store vectors in PostgreSQL with pgvector.
+- Search documentation semantically, always scoped by organization.
+- Ask RAG questions and receive assistant answers with cited sources.
+- Manage support tickets, comments, status, priority, category, and assignment.
+- Use AI services to classify tickets, summarize issues, and suggest replies.
+- Run evaluation cases to check RAG answer quality.
+- View operational metrics in a dashboard.
+- Explore a documented REST API through Swagger/OpenAPI.
+- Run the whole stack locally with Docker Compose.
+
+---
+
+## 🧠 Why This Project Is Interesting
+
+SupportFlow AI demonstrates the kind of backend work expected in real SaaS products:
+
+- **Multi-tenant data isolation** with organizations and memberships.
+- **Role-based permissions** for `owner`, `admin`, `agent`, and `viewer`.
+- **Service-layer architecture** instead of putting business logic inside views.
+- **AI provider abstraction** with deterministic fake AI for tests and OpenAI-ready providers for real usage.
+- **RAG with sources** instead of a simple chatbot.
+- **Async processing** with Celery and Redis for longer-running workflows.
+- **Professional testing** covering APIs, services, permissions, OpenAPI, security regressions, web views, and async tasks.
+- **Portfolio-ready documentation** explaining architecture, business rules, RAG design, hardening, and demo flow.
+
+---
+
+## 🧱 Tech Stack
+
+| Area | Tools |
+| --- | --- |
+| Backend | Python, Django, Django REST Framework |
+| Database | PostgreSQL, pgvector |
+| Async | Celery, Redis |
+| Auth | Custom email user, SimpleJWT, Django sessions for web UI |
+| AI | FakeAIProvider, OpenAIProvider, embeddings, RAG, prompt templates |
+| API Docs | drf-spectacular, Swagger UI |
+| Testing | pytest, pytest-django |
+| Frontend | Django Templates, Bootstrap 5 |
+| DevOps | Docker, Docker Compose, GitHub Actions |
+
+---
+
+## 🗂️ Project Structure
 
 ```txt
 apps/
-  core/
-  users/
-  organizations/
-  documents/
-  embeddings/
-  chat/
-  tickets/
-  ai/
-  evaluations/
-  dashboard/
-  web/
+  ai/              AI providers, prompts, shared AI exceptions
+  chat/            RAG conversations, messages, answer sources
+  core/            shared permissions, pagination, helpers
+  dashboard/       organization-scoped metrics
+  documents/       uploads, extraction, chunking, document APIs
+  embeddings/      embedding generation and semantic search
+  evaluations/     RAG evaluation cases and runs
+  organizations/   workspaces, memberships, roles
+  tickets/         support tickets, comments, AI ticket workflows
+  users/           custom email user, auth, profile endpoints
+  web/             server-rendered demo UI
 config/
-  settings/
-docker/
-requirements/
-tests/
+  settings/        environment-specific Django settings
+docs/              architecture, API, RAG, testing, hardening, portfolio docs
+requirements/      base, development, production, test dependencies
+tests/             API, service, permission, security, web, async tests
 ```
 
-## Setup
+---
 
-Create a local environment file:
+## 🚀 Quick Start
+
+Create your local environment file:
 
 ```bash
 cp .env.example .env
@@ -105,229 +118,85 @@ Build and start the stack:
 docker compose up --build
 ```
 
-Run checks:
+Run migrations:
 
 ```bash
-docker compose run --rm web python manage.py check
-docker compose run --rm web pytest
+docker compose exec web python manage.py migrate
 ```
 
-Seed demo data:
+Seed portfolio demo data:
 
 ```bash
 docker compose run --rm web python manage.py seed_demo_data
 ```
 
-Default demo credentials:
+Open the app:
 
 ```txt
-demo@example.com
-DemoPass123!
+http://127.0.0.1:8000/
 ```
 
-## Useful Commands
+Demo credentials:
+
+```txt
+Email:    demo@example.com
+Password: DemoPass123!
+```
+
+---
+
+## ✅ Verification Commands
 
 ```bash
 docker compose config
 docker compose build
-docker compose exec web python manage.py migrate
-docker compose exec web python manage.py createsuperuser
 docker compose run --rm web python manage.py check
 docker compose run --rm web python manage.py makemigrations --check --dry-run
 docker compose run --rm web pytest
 docker compose run --rm web python manage.py spectacular --file /tmp/supportflow-schema.yml --validate
-docker compose exec worker celery -A config inspect ping
+docker compose run --rm web python manage.py check --deploy --settings=config.settings.production
 ```
 
-## Continuous Integration
+The repository also includes GitHub Actions CI for pushes and pull requests to `main`.
 
-GitHub Actions runs on pushes and pull requests to `main`.
+---
 
-The workflow validates:
+## 🔐 Authentication And Roles
 
-- Docker Compose configuration,
-- Docker image build,
-- Django checks,
-- pending migrations,
-- full pytest suite,
-- OpenAPI schema,
-- production-style deploy checks.
+SupportFlow AI uses a custom email-based user model.
 
-Workflow file:
+When a user registers, the app automatically creates an initial organization to make the demo flow smoother.
+
+Initial roles:
 
 ```txt
-.github/workflows/ci.yml
+owner
+admin
+agent
+viewer
 ```
 
-## API Docs
+Every major resource belongs to an organization, and API/web access is filtered by membership and role.
 
-When the development server is running:
+---
 
-- Schema: `/api/schema/`
-- Swagger UI: `/api/docs/`
+## 🤖 AI And RAG
 
-Additional API notes live in `docs/API.md`.
+The AI layer is intentionally abstracted:
 
-Asynchronous processing is documented in `docs/ASYNC.md`.
-
-Security hardening is documented in `docs/HARDENING.md`.
-
-Testing strategy is documented in `docs/TESTING.md`.
-
-Architecture is documented in `docs/ARCHITECTURE.md`.
-
-RAG design is documented in `docs/RAG.md`.
-
-Business rules are documented in `docs/BUSINESS_RULES.md`.
-
-Portfolio guidance is documented in `docs/PORTFOLIO.md`.
-
-Demo data is documented in `docs/DEMO_DATA.md`.
-
-## Web Interface
-
-When the development server is running:
-
-- Web app: `/`
-- Login: `/login/`
-- Register: `/register/`
-- API docs: `/api/docs/`
-
-The web interface is documented in `docs/WEB.md`.
-
-## Current API Endpoints
-
-Authentication:
-
-```txt
-POST /api/auth/register/
-POST /api/auth/token/
-POST /api/auth/token/refresh/
-GET  /api/users/me/
-PATCH /api/users/me/
-```
-
-Organizations:
-
-```txt
-GET    /api/organizations/
-POST   /api/organizations/
-GET    /api/organizations/{id}/
-PATCH  /api/organizations/{id}/
-DELETE /api/organizations/{id}/
-GET    /api/organizations/{id}/members/
-POST   /api/organizations/{id}/members/
-PATCH  /api/organizations/{id}/members/{member_id}/
-DELETE /api/organizations/{id}/members/{member_id}/
-```
-
-Documents:
-
-```txt
-GET    /api/documents/
-POST   /api/documents/
-GET    /api/documents/{id}/
-PATCH  /api/documents/{id}/
-DELETE /api/documents/{id}/
-GET    /api/documents/{id}/chunks/
-POST   /api/documents/{id}/process/
-POST   /api/documents/{id}/process-async/
-POST   /api/documents/{id}/generate-embeddings/
-POST   /api/documents/{id}/generate-embeddings-async/
-```
-
-Semantic search:
-
-```txt
-POST /api/search/semantic/
-```
-
-Chat RAG:
-
-```txt
-GET    /api/conversations/
-POST   /api/conversations/
-GET    /api/conversations/{id}/
-DELETE /api/conversations/{id}/
-GET    /api/conversations/{id}/messages/
-POST   /api/conversations/{id}/ask/
-```
-
-Tickets:
-
-```txt
-GET    /api/tickets/
-POST   /api/tickets/
-GET    /api/tickets/{id}/
-PATCH  /api/tickets/{id}/
-DELETE /api/tickets/{id}/
-POST   /api/tickets/{id}/comments/
-POST   /api/tickets/{id}/classify/
-POST   /api/tickets/{id}/classify-async/
-POST   /api/tickets/{id}/suggest-reply/
-POST   /api/tickets/{id}/suggest-reply-async/
-POST   /api/tickets/{id}/resolve/
-```
-
-Evaluations:
-
-```txt
-GET    /api/evaluation-cases/
-POST   /api/evaluation-cases/
-GET    /api/evaluation-cases/{id}/
-PATCH  /api/evaluation-cases/{id}/
-DELETE /api/evaluation-cases/{id}/
-POST   /api/evaluation-cases/{id}/run/
-POST   /api/evaluation-cases/{id}/run-async/
-GET    /api/evaluation-runs/
-GET    /api/evaluation-runs/{id}/
-```
-
-Dashboard:
-
-```txt
-GET /api/dashboard/summary/
-```
-
-Example search payload:
-
-```json
-{
-  "organization": 1,
-  "query": "How do I reset my password?",
-  "limit": 5
-}
-```
-
-## AI and Embeddings
-
-SupportFlow AI uses an AI provider abstraction:
-
-- `FakeAIProvider` returns deterministic local embeddings for development and tests.
-- `OpenAIProvider` is prepared for real embeddings when `AI_PROVIDER=openai` and `OPENAI_API_KEY` are configured.
-- Tests force the fake provider and never call external AI services.
+- `FakeAIProvider` returns deterministic embeddings and generated text for local development and tests.
+- `OpenAIProvider` is prepared for real OpenAI usage when configured with environment variables.
+- Tests force the fake provider and never call external services.
 - Semantic search uses pgvector and always filters by organization.
-- Chat RAG stores conversations, user messages, assistant answers, and cited sources.
-- Assistant answers are generated from retrieved chunks; if no context is found, the system returns a safe insufficient-information response.
-- Ticket AI services can classify category/priority, summarize tickets, and suggest support replies.
-- Evaluation cases can run RAG questions and store generated answers, retrieved sources, scores, and pass/fail results.
-- Dashboard summary exposes organization-scoped counts for documents, chunks, conversations, tickets, evaluations, and estimated AI operations.
-- Celery tasks can process documents, generate embeddings, classify tickets, suggest ticket replies, and run evaluations in the background.
+- RAG answers store the assistant message plus the exact document chunks used as sources.
 
-## Async Processing
+Important technical note:
 
-The project uses Celery with Redis for background jobs. The synchronous service layer remains the source of truth, while Celery tasks wrap those services for longer-running workflows.
-
-Current task coverage:
-
-- Document processing and chunk generation.
-- Document embedding generation.
-- Pending organization embedding generation.
-- Ticket classification.
-- Ticket reply suggestion.
-- Evaluation case execution.
-
-The web interface queues these operations where appropriate. The API exposes both synchronous endpoints and explicit `*-async` endpoints that return `202 Accepted` with a Celery `task_id`.
+```txt
+The current development setup uses 16-dimensional fake embeddings.
+Before using real OpenAI embeddings in production, migrate the vector dimension
+to match the selected embedding model.
+```
 
 Relevant environment variables:
 
@@ -338,62 +207,141 @@ FAKE_EMBEDDING_DIMENSIONS=16
 OPENAI_API_KEY=
 OPENAI_CHAT_MODEL=
 OPENAI_EMBEDDING_MODEL=text-embedding-3-small
-SUPPORTFLOW_MAX_UPLOAD_SIZE=5242880
 ```
 
-Technical note: the project currently uses 16-dimensional embeddings for development, the fake provider, and tests. Before using OpenAI embeddings in production, migrate to a dimension compatible with the selected real embedding model.
+---
 
-## Demo Flow
+## 🧪 Testing
 
-1. Register or log in.
-2. Open the dashboard.
-3. Upload a `.txt` or `.md` document.
-4. Queue document processing.
-5. Queue embedding generation.
-6. Create a RAG conversation and ask a question.
-7. Inspect answer sources.
-8. Create a support ticket.
-9. Queue classification and suggested reply.
-10. Create and run an evaluation case.
+The test suite covers:
 
-For a faster walkthrough, run:
+- user registration and JWT auth,
+- organization membership and role permissions,
+- document upload, validation, extraction, and chunking,
+- pgvector-backed embedding flows with fake deterministic vectors,
+- semantic search isolation by organization,
+- RAG conversations and cited sources,
+- ticket workflows and AI-assisted actions,
+- evaluation cases and runs,
+- dashboard metrics,
+- async Celery task wrappers,
+- web views,
+- OpenAPI schema validation,
+- security and multi-tenant regression tests.
+
+Run tests:
 
 ```bash
-docker compose run --rm web python manage.py seed_demo_data
+docker compose run --rm web pytest
 ```
 
-Then log in with `demo@example.com` / `DemoPass123!`.
-
-## Current Limitations
-
-- Fake/local embeddings use 16 dimensions.
-- Real OpenAI embeddings require a dimension migration before production use.
-- PDF parsing is planned but not implemented.
-- Task status polling UI is not implemented yet.
-- Rate limiting and audit logs are documented as future hardening improvements.
-- Demo data seeding is available for local development.
-
-## Documentation Map
+Current local suite:
 
 ```txt
-docs/ARCHITECTURE.md     system design and app boundaries
-docs/API.md              REST API notes and endpoint groups
-docs/RAG.md              RAG, embeddings, prompts, sources
-docs/BUSINESS_RULES.md   roles, permissions, statuses, workflows
-docs/ASYNC.md            Celery/Redis background processing
-docs/WEB.md              server-rendered UI
-docs/TESTING.md          testing strategy and commands
-docs/HARDENING.md        security baseline
-docs/PORTFOLIO.md        interview/demo guide
-docs/DEMO_DATA.md        local demo seed command
+114 passed
 ```
 
-## Portfolio Summary
+---
+
+## 🧭 Demo Flow
+
+Recommended walkthrough for interviews:
+
+1. Log in with the demo user.
+2. Open the dashboard and explain organization-scoped metrics.
+3. Show uploaded documents and generated chunks.
+4. Open Chat RAG and ask a question about internal documentation.
+5. Point out the cited document source.
+6. Open a ticket and show status, priority, category, comments, and AI suggestions.
+7. Open evaluations and show how RAG answers can be tested.
+8. Open Swagger UI and highlight the REST API surface.
+9. Mention CI, tests, Docker, hardening docs, and async workflows.
+
+---
+
+## 🔌 Main API Areas
+
+Swagger UI is available when the server is running:
+
+```txt
+http://127.0.0.1:8000/api/docs/
+```
+
+Endpoint groups:
+
+```txt
+/api/auth/
+/api/users/
+/api/organizations/
+/api/documents/
+/api/search/semantic/
+/api/conversations/
+/api/tickets/
+/api/evaluation-cases/
+/api/evaluation-runs/
+/api/dashboard/summary/
+```
+
+Example semantic search payload:
+
+```json
+{
+  "organization": 1,
+  "query": "How do I reset my password?",
+  "limit": 5
+}
+```
+
+---
+
+## ⚙️ Async Processing
+
+Celery and Redis are configured for background workflows.
+
+Current async coverage:
+
+- process documents,
+- generate document embeddings,
+- generate pending organization embeddings,
+- classify tickets,
+- suggest ticket replies,
+- run evaluation cases.
+
+Check the worker:
+
+```bash
+docker compose exec worker celery -A config inspect ping
+```
+
+---
+
+## 📚 Documentation
+
+| Document | Purpose |
+| --- | --- |
+| [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) | System design and app boundaries |
+| [docs/API.md](docs/API.md) | REST API notes and endpoint groups |
+| [docs/RAG.md](docs/RAG.md) | Embeddings, retrieval, prompts, sources |
+| [docs/BUSINESS_RULES.md](docs/BUSINESS_RULES.md) | Roles, permissions, statuses, workflows |
+| [docs/ASYNC.md](docs/ASYNC.md) | Celery and Redis background processing |
+| [docs/WEB.md](docs/WEB.md) | Server-rendered web interface |
+| [docs/TESTING.md](docs/TESTING.md) | Testing strategy and commands |
+| [docs/HARDENING.md](docs/HARDENING.md) | Security baseline and future hardening |
+| [docs/DEMO_DATA.md](docs/DEMO_DATA.md) | Demo seed command and credentials |
+| [docs/PORTFOLIO.md](docs/PORTFOLIO.md) | Interview/demo guide |
+
+---
+
+## 🧑‍💻 Portfolio Summary
 
 Suggested CV bullet:
 
 ```txt
-Built SupportFlow AI, a Django/DRF internal support SaaS platform with organization-based permissions, document ingestion, pgvector semantic search, RAG answers with cited sources, AI-assisted ticket workflows, Celery background tasks, dashboard metrics, OpenAPI docs, Docker setup, and 100+ automated tests.
+Built SupportFlow AI, a Django/DRF internal support SaaS platform with
+organization-based permissions, document ingestion, pgvector semantic search,
+RAG answers with cited sources, AI-assisted ticket workflows, Celery background
+tasks, dashboard metrics, OpenAPI docs, Docker setup, GitHub Actions CI, and
+100+ automated tests.
 ```
 
 Best files to discuss in interviews:
@@ -410,22 +358,20 @@ tests/security/test_permission_regressions.py
 tests/api/test_api_contract.py
 ```
 
-See `docs/PORTFOLIO.md` for the full demo script and screenshot checklist.
+---
 
-## Roadmap
+## 🛣️ Future Improvements
 
-1. Users, organizations, memberships, and permissions
-2. Document upload, text extraction, and chunking
-3. Embeddings and semantic search with pgvector
-4. RAG chat with cited sources
-5. AI-assisted support tickets
-6. Evaluation module
-7. Dashboard metrics
-8. Web UI with Django Templates and Bootstrap 5
-9. Celery-backed async workflows
-10. Security hardening baseline
-11. Professional testing expansion
-12. Professional documentation expansion
-13. Demo data command
-14. Portfolio polish and screenshots
-15. Optional future enhancements: task polling, rate limiting, PDF parsing, audit logs
+- Task status polling UI for async jobs.
+- PDF parsing.
+- Audit logs for sensitive actions.
+- Rate limiting.
+- Real OpenAI embedding dimension migration.
+- More advanced evaluation scoring.
+- Deployment hardening for a production environment.
+
+---
+
+## 📄 License
+
+Portfolio project. Add a license before using it as a public reusable template.
